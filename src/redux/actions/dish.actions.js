@@ -8,3 +8,12 @@ export const addNewDish = async (payload) => {
     throw e.response.data;
   }
 };
+
+export const listAllDish = async (query) => {
+  try {
+    const res = await Services.listAllDishes(query);
+    return res;
+  } catch (e) {
+    throw e.response.data;
+  }
+};

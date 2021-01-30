@@ -20,7 +20,7 @@ export default function CustomModal(props) {
     <>
       <Modal isOpen={props.open} size={props.size ? props.size : ""}>
         <Form id="form" onSubmit={props.handleSubmit}>
-          <ModalHeader>{props.title || "Modal Title"}</ModalHeader>
+          <ModalHeader tag="p">{props.title || "Modal Title"}</ModalHeader>
           <ModalBody>
             {props.children || "No child elements supplied."}
           </ModalBody>
