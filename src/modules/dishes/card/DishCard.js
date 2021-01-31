@@ -21,13 +21,13 @@ import "react-quill/dist/quill.snow.css";
 import NoImg from "../../../assets/no_image.png";
 
 import FastfoodSharpIcon from "@material-ui/icons/FastfoodSharp";
+
 const useStyles = makeStyles((theme) => ({
   typography: {
     width: "100%",
     position: "relative",
     display: "flex",
     height: "2.5rem",
-    // overflow: "hidden",
   },
   cardContent: {
     width: "100%",
@@ -43,11 +43,18 @@ const useStyles = makeStyles((theme) => ({
     opacity: "0.6",
   },
   dishCard: {
-    maxWidth: "220px",
+    width: "220px",
+
+    boxShadow: "1px 2px 10px rgba(218, 225, 253,0.1)",
+    transition: "all 0.3s ease-in-out",
+    "&:hover": {
+      boxShadow: "2px 4px 12px rgba(218, 225, 253,0.4)",
+      marginTop: "-2%",
+    },
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "56.25%",
   },
   avatar: {
     backgroundColor: red[500],
@@ -58,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
     width: "fit-content",
   },
 }));
+
 function DishCard({ props }) {
   const classes = useStyles();
   const dispatch = useDispatch();

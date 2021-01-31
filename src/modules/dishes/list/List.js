@@ -271,8 +271,28 @@ function List() {
           </Typography>
         </Grid>
 
-        <Grid item xs={4} className="mr-3">
-          <div style={{ display: "flex" }}>
+        <Grid item xs={5} className="mr-3">
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{
+                display: "flex",
+                width: "20%",
+                fontSize: "1.1rem",
+                color: "rgba(255,255,255,0.9)",
+                justifyContent: "end",
+                alignItems: "center",
+                marginLeft: "auto",
+                marginTop: "auto",
+              }}
+            >
+              Filter:
+            </span>
             <TextField
               value={filter ? filter : ""}
               onChange={(e) => setFilter(e.target.value)}
@@ -314,10 +334,9 @@ function List() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
+              gridTemplateColumns: "repeat( auto-fit, minmax(200px, 1fr) )",
               gridColumnGap: "10px",
               width: "100%",
-              columnWidth: "fit-content",
             }}
           >
             {filterArray.map((item, index) => (
@@ -341,7 +360,7 @@ function List() {
         className="p-3 "
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+          gridTemplateColumns: "repeat( auto-fit, minmax(250px, 1fr) )",
           gridColumnGap: "10px",
         }}
       >

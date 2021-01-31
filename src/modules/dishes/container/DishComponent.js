@@ -28,6 +28,7 @@ function DishComponent() {
     if (!details) return;
     setOpen(!open);
   }, [details]);
+
   return (
     <>
       <div className={classes.root}>
