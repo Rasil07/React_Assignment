@@ -5,7 +5,10 @@ import * as ACTIONTYPES from "../types/dish.actions.types";
 function* listDishes(action) {
   try {
     const response = yield call(listAllDish);
-    yield put({ type: ACTIONTYPES.LIST_SUCCESS, payload: response });
+    yield put({
+      type: ACTIONTYPES.LIST_SUCCESS,
+      payload: { response, query: action.query },
+    });
   } catch (err) {
     console.log("dish saga ma error ", err);
   }

@@ -21,7 +21,17 @@ export const dishReducer = (state = initialState, action) => {
     case ACTION.LIST_SUCCESS:
       return {
         ...state,
-        dishes: action.payload,
+        dishes:
+          action.payload.query && action.payload.query.length > 0
+            ? action.payload.response.filter((dish) => {
+                const ingName = dish.ingridients.map(
+                  (ing) => ing.ingridientName
+                );
+                return action.payload.query.some((val) =>
+                  ingName.includes(val)
+                );
+              })
+            : action.payload.response,
       };
     case ACTION.SELECT_DISH_DETAILS:
       return {

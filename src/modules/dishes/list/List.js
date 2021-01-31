@@ -105,11 +105,10 @@ function List() {
     setContent(content);
   };
   const fetchAllDishes = (query) => {
-    dispatch({ type: ACTIONTYPES.LIST_REQUEST });
+    dispatch({ type: ACTIONTYPES.LIST_REQUEST, query });
   };
   const addFilter = () => {
     if (!filter) return;
-
     setFilterArray([...filterArray, filter]);
     setFilter(null);
     return;
@@ -147,7 +146,9 @@ function List() {
     return;
   };
 
-  useEffect(fetchAllDishes, []);
+  useEffect(() => {
+    fetchAllDishes(filterArray);
+  }, [filterArray]);
 
   return (
     <>
@@ -159,6 +160,7 @@ function List() {
         className="mb-3"
         spacing={2}
       >
+        <Grid item xs={6} className="mr-3"></Grid>
         <Grid item xs={4} className="mr-3">
           <div style={{ display: "flex" }}>
             <TextField
@@ -183,17 +185,20 @@ function List() {
           </Button>
         </Grid>
       </Grid>
-
-      <div
-        className="p-3 "
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(10, minmax(0, 1fr))",
-          gridColumnGap: "10px",
-        }}
-      >
-        {filterArray &&
-          filterArray.map((item, index) => (
+      {filterArray && filterArray.length ? (
+        <div
+          className="p-3 "
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(10, minmax(0, 1fr))",
+            gridColumnGap: "10px",
+            border: "1px solid black",
+            width: "100%",
+            columnWidth: "fit-content",
+          }}
+        >
+          <InputLabel>Filter Parameters</InputLabel>
+          {filterArray.map((item, index) => (
             <span
               onClick={() =>
                 setFilterArray((prev) => prev.filter((itm) => itm !== item))
@@ -204,7 +209,11 @@ function List() {
               </p>
             </span>
           ))}
-      </div>
+        </div>
+      ) : (
+        ""
+      )}
+
       <div
         className="p-3 "
         style={{
