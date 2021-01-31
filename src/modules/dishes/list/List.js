@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/core/styles";
+import CancelOutlinedIcon from "@material-ui/icons/CancelOutlined";
 import {
   Button,
   Grid,
@@ -19,6 +20,8 @@ import DishCard from "../card";
 import { grey, deepOrange, blue } from "@material-ui/core/colors";
 import DeleteForeverSharpIcon from "@material-ui/icons/DeleteForeverSharp";
 import CustomModal from "../../global/CustomModal";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 const useStyles = makeStyles((theme) => ({
   logo: {
@@ -77,6 +80,35 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "1.2rem",
   },
 
+  ingridientListUl: {
+    position: "relative",
+    width: "100%",
+
+    height: "80px",
+    display: "grid",
+    gridTemplateColumns: "repeat( auto-fit, minmax(150px, 1fr) )",
+    gridColumnGap: "10px",
+    fontSize: "0.7rem",
+  },
+  ingridientList: {
+    height: "1.4rem",
+    listStyle: "none",
+    margin: "0.2rem",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: grey[200],
+    borderRadius: "10px",
+    maxWidth: "max-content",
+    padding: "15px",
+    cursor: "pointer",
+    "&:hover": {
+      border: "0.1rem solid",
+      borderColor: deepOrange[300],
+      backgroundColor: "rgba(255,255,255,0.7)",
+      color: deepOrange[400],
+    },
+  },
   filterParams: {
     border: ".5px solid rgba(255,255,255,0.4)",
     borderRadius: "0.4rem",
@@ -151,9 +183,18 @@ function List() {
       showMessage("All feilds are required");
       return;
     }
+
     setDish((dish) => ({
       ...dish,
-      ingridients: [...dish.ingridients, ingridient],
+      ingridients: dish.ingridients
+        .map((item) => item.ingridientName)
+        .includes(ingridient.ingridientName)
+        ? dish.ingridients.map((item) =>
+            item.ingridientName === ingridient.ingridientName
+              ? (item = ingridient)
+              : item
+          )
+        : [...dish.ingridients, ingridient],
     }));
     setIngridient({});
   };
@@ -360,7 +401,7 @@ function List() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+            gridTemplateColumns: "1fr .5fr .5fr 2fr",
             gridColumnGap: "10px",
             alignItems: "center",
           }}
@@ -427,6 +468,44 @@ function List() {
           </Button>
           {message && <p>{message}</p>}
         </div>
+        <br />
+
+        <PerfectScrollbar>
+          {dish.ingridients.length > 0 ? (
+            <ul className={classes.ingridientListUl}>
+              {dish.ingridients.map((item, index) => (
+                <li
+                  key={index}
+                  className={classes.ingridientList}
+                  onClick={() =>
+                    setDish((prev) => {
+                      return {
+                        ...prev,
+                        ingridients: prev.ingridients.filter(
+                          (itm) => itm.ingridientName !== item.ingridientName
+                        ),
+                      };
+                    })
+                  }
+                >
+                  {" "}
+                  <span>
+                    <CancelOutlinedIcon />{" "}
+                    {item.ingridientName +
+                      " " +
+                      item.ingridientQuantity +
+                      "(" +
+                      item.ingridientMetrics +
+                      ")"}{" "}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            "No Ingridiets listed"
+          )}
+        </PerfectScrollbar>
+
         <br />
         <InputLabel>Steps</InputLabel>
         <ReactQuill
