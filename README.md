@@ -1,3 +1,15 @@
+## Project Overview
+
+This is a react application for recipe management of dishes implementing Redux as state management. Redux-Saga is used as the middleware to handle async actions to handle state change. For UI components, this project uses both reactstrap and material-ui. Localstorage is used as the main storage for this application, so no Backend is required.
+
+## Project Setup Steps and How to run .
+
+1.  open your desired destination folder in your machine .
+2.  open command prompt and run `git clone https://github.com/Rasil07/React_Assignment.git`.
+3.  install yarn or npm in your machine if not installed.
+4.  open the project and run `yarn install or npm install` to install all the dependencies.
+5.  run `yarn start` or `npm start` to run the project in your local machine.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
