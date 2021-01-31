@@ -1,16 +1,39 @@
 import React from "react";
 import {
   Form,
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter,
   FormGroup,
 } from "reactstrap";
+import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
 import PropTypes from "prop-types";
+import { red, blue } from "@material-ui/core/colors";
 
+const useStyles = makeStyles((theme) => ({
+  header: {
+    fontSize: "1.3rem",
+    fontWeight: "light",
+  },
+  cancelButton: {
+    backgroundColor: red[600],
+    color: "white",
+    "&:hover": {
+      backgroundColor: red[500],
+    },
+  },
+  submitButton: {
+    backgroundColor: blue[600],
+    color: "white",
+    "&:hover": {
+      backgroundColor: blue[500],
+    },
+  },
+}));
 export default function CustomModal(props) {
+  const classes = useStyles();
   const handleClose = () => {
     props.handleCancel();
     props.setOpen(false);
@@ -20,26 +43,32 @@ export default function CustomModal(props) {
     <>
       <Modal isOpen={props.open} size={props.size ? props.size : ""}>
         <Form id="form" onSubmit={props.handleSubmit}>
-          <ModalHeader tag="p">{props.title || "Modal Title"}</ModalHeader>
+          <ModalHeader className={classes.header}>
+            {props.title || "Modal Title"}
+          </ModalHeader>
           <ModalBody>
             {props.children || "No child elements supplied."}
           </ModalBody>
           <ModalFooter>
             <FormGroup>
               {props.handleCancel ? (
-                <Button onClick={handleClose} className="mr-2">
+                <Button className={classes.cancelButton} onClick={handleClose}>
                   Close
                 </Button>
               ) : (
                 <Button
-                  color="secondary"
+                  cclassName={classes.cancelButton}
                   onClick={() => props.setOpen(!props.open)}
                 >
                   Close
                 </Button>
               )}
               {props.handleSubmit ? (
-                <Button color="primary" type="submit" style={{ marginLeft: 5 }}>
+                <Button
+                  className={classes.submitButton}
+                  type="submit"
+                  style={{ marginLeft: 5 }}
+                >
                   Submit
                 </Button>
               ) : (

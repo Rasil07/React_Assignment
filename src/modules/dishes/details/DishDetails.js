@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import PerfectScrollbar from "react-perfect-scrollbar";
 import {
   Grid,
   InputLabel,
@@ -20,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
     width: "250px",
     height: "210px",
     paddingTop: "56.25%", // 16:9
+  },
+  tableContent: {
+    width: "100%",
+    height: "300px",
+    position: "relative",
   },
 }));
 
@@ -44,11 +51,11 @@ function DishDetails({ props }) {
             />
           </Card>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={8}>
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gridTemplateColumns: "1fr 2fr",
               gridColumnGap: "10px",
               alignItems: "left",
               marginLeft: "1rem",
@@ -60,29 +67,31 @@ function DishDetails({ props }) {
                 ? props.details.name
                 : ""}
             </div>
-            <div className="form-group">
-              <InputLabel>Ingridients :</InputLabel>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Ingridient Name</TableCell>
-                    <TableCell> Quantity</TableCell>
-                    <TableCell> Metrics</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {props && props.details && props.details.ingridients
-                    ? props.details.ingridients.map((item, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{item.ingridientName}</TableCell>
-                          <TableCell>{item.ingridientQuantity}</TableCell>
-                          <TableCell>{item.ingridientMetrics}</TableCell>
-                        </TableRow>
-                      ))
-                    : "No ingredient available"}
-                </TableBody>
-              </Table>
-            </div>
+            <PerfectScrollbar>
+              <div className={classes.tableContent}>
+                <InputLabel>Ingridients :</InputLabel>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Ingridient Name</TableCell>
+                      <TableCell> Quantity</TableCell>
+                      <TableCell> Metrics</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {props && props.details && props.details.ingridients
+                      ? props.details.ingridients.map((item, index) => (
+                          <TableRow key={index}>
+                            <TableCell>{item.ingridientName}</TableCell>
+                            <TableCell>{item.ingridientQuantity}</TableCell>
+                            <TableCell>{item.ingridientMetrics}</TableCell>
+                          </TableRow>
+                        ))
+                      : "No ingredient available"}
+                  </TableBody>
+                </Table>
+              </div>
+            </PerfectScrollbar>
           </div>
         </Grid>
       </Grid>

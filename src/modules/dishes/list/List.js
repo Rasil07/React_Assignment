@@ -16,14 +16,25 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import * as ACTIONTYPES from "../../../redux/types/dish.actions.types";
 import DishCard from "../card";
-import { grey, deepOrange } from "@material-ui/core/colors";
+import { grey, deepOrange, blue } from "@material-ui/core/colors";
 import DeleteForeverSharpIcon from "@material-ui/icons/DeleteForeverSharp";
 import CustomModal from "../../global/CustomModal";
 
 const useStyles = makeStyles((theme) => ({
   logo: {
-    color: grey[200],
+    color: deepOrange[500],
+    fontFamily: "'Poppins', sans-serif",
   },
+  addFilterBtn: {
+    backgroundColor: blue[700],
+    color: "white",
+    border: "none",
+    "&:hover": {
+      backgroundColor: blue[800],
+    },
+    marginBottom: "5px",
+  },
+
   filterLabel: {
     color: grey[50],
     display: "inline-block",
@@ -198,8 +209,6 @@ function List() {
     return;
   };
 
-  function removeFilter(item) {}
-
   useEffect(() => {
     fetchAllDishes(filterArray);
   }, [filterArray]);
@@ -233,11 +242,16 @@ function List() {
               variant="standard"
               InputProps={{
                 className: classes.filterInput,
+                endAdornment: (
+                  <Button
+                    onClick={() => addFilter()}
+                    className={classes.addFilterBtn}
+                  >
+                    <AddIcon />
+                  </Button>
+                ),
               }}
             />
-            <Button onClick={() => addFilter()}>
-              <AddIcon />
-            </Button>
           </div>
         </Grid>
         <Grid item>

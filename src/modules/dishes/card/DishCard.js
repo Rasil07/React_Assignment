@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { red } from "@material-ui/core/colors";
 import RemoveRedEyeOutlinedIcon from "@material-ui/icons/RemoveRedEyeOutlined";
@@ -10,8 +10,10 @@ import {
   CardHeader,
   CardMedia,
   Typography,
-  InputLabel,
+  CardActions,
 } from "@material-ui/core";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
@@ -22,20 +24,22 @@ import FastfoodSharpIcon from "@material-ui/icons/FastfoodSharp";
 const useStyles = makeStyles((theme) => ({
   typography: {
     width: "100%",
+    position: "relative",
     display: "flex",
+    height: "2.5rem",
+    // overflow: "hidden",
   },
   cardContent: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-evenly",
-    alignItems: "center",
   },
   showButton: {
     width: "fit-content",
     fontSize: ".5rem",
     marginRight: "auto",
     marginLeft: "auto",
+
     opacity: "0.6",
   },
   dishCard: {
@@ -47,6 +51,11 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
+  },
+  ingridientLabel: {
+    color: "rgba(0,0,0,0.7)",
+    float: "left",
+    width: "fit-content",
   },
 }));
 function DishCard({ props }) {
@@ -71,23 +80,28 @@ function DishCard({ props }) {
           props && props.item && props.item.image ? props.item.image : NoImg
         }
       />
-      <CardContent className={classes.cardContent}>
-        <InputLabel>Ingridient :</InputLabel>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          component="p"
-          className={classes.typography}
-        >
-          {props && props.item && props.item.ingridients
-            ? props.item.ingridients.map(
-                (item1, index) =>
-                  `${item1.ingridientName} ${
-                    props.item.ingridients.length - 1 > index ? "," : ""
-                  }`
-              )
-            : "No Ingridients"}
-        </Typography>
+      <PerfectScrollbar>
+        <CardContent className={classes.cardContent}>
+          <p className={classes.ingridientLabel}>Ingridient</p>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            component="p"
+            className={classes.typography}
+          >
+            {props && props.item && props.item.ingridients
+              ? props.item.ingridients.map(
+                  (item1, index) =>
+                    `${item1.ingridientName} ${
+                      props.item.ingridients.length - 1 > index ? "," : ""
+                    }`
+                )
+              : "No Ingridients"}
+          </Typography>
+        </CardContent>
+      </PerfectScrollbar>
+
+      <CardActions>
         <IconButton
           aria-label="show"
           className={classes.showButton}
@@ -95,7 +109,7 @@ function DishCard({ props }) {
         >
           <RemoveRedEyeOutlinedIcon />
         </IconButton>
-      </CardContent>
+      </CardActions>
     </Card>
   );
 }

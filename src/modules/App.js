@@ -2,7 +2,11 @@ import React from "react";
 
 import Dishes from "./dishes/container";
 import { Container } from "reactstrap";
-import { makeStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  MuiThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -22,15 +26,22 @@ const useStyles = makeStyles((theme) => ({
     padding: "2rem .5rem .5rem .5rem",
   },
 }));
+const THEME = createMuiTheme({
+  typography: {
+    fontFamily: "'Poppins', sans-serif",
+  },
+});
 
 function App() {
   const classes = useStyles();
   return (
-    <div className={classes.wrapper}>
-      <Container className={classes.containerWrap}>
-        <Dishes />
-      </Container>
-    </div>
+    <MuiThemeProvider theme={THEME}>
+      <div className={classes.wrapper}>
+        <Container className={classes.containerWrap}>
+          <Dishes />
+        </Container>
+      </div>
+    </MuiThemeProvider>
   );
 }
 
