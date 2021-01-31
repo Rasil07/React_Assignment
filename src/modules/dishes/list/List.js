@@ -298,7 +298,7 @@ function List() {
               onChange={(e) => setFilter(e.target.value)}
               type="text"
               label="Filter by Ingridient"
-              placeholder="Enter Ingidient"
+              placeholder="Enter Ingridient name"
               color="secondary"
               variant="standard"
               InputProps={{
