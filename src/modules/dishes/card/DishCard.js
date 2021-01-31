@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: "0.6",
   },
   dishCard: {
-    maxWidth: "250px",
+    maxWidth: "220px",
   },
   media: {
     height: 0,

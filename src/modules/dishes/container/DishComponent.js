@@ -10,12 +10,9 @@ import * as ACTION from "../../../redux/types/dish.actions.types";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    width: "100%",
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
+  listContainer: {},
 }));
 function DishComponent() {
   const classes = useStyles();
@@ -32,21 +29,24 @@ function DishComponent() {
     setOpen(!open);
   }, [details]);
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3}>
-        <DishList />
-
-        <CustomModal
-          open={open}
-          setOpen={setOpen}
-          handleCancel={handleClose}
-          title={details ? `${details.name} Recipe` : ""}
-          size="xl"
-        >
-          <DishDetails details={details} />
-        </CustomModal>
-      </Grid>
-    </div>
+    <>
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} className={classes.listContainer}>
+            <DishList />
+          </Grid>
+        </Grid>
+      </div>
+      <CustomModal
+        open={open}
+        setOpen={setOpen}
+        handleCancel={handleClose}
+        title={details ? `${details.name} Recipe` : ""}
+        size="xl"
+      >
+        <DishDetails details={details} />
+      </CustomModal>
+    </>
   );
 }
 

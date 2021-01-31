@@ -9,16 +9,30 @@ import {
   TextField,
   MenuItem,
   FormControl,
+  Typography,
   InputLabel,
 } from "@material-ui/core";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import * as ACTIONTYPES from "../../../redux/types/dish.actions.types";
 import DishCard from "../card";
-
+import { grey, deepOrange } from "@material-ui/core/colors";
+import DeleteForeverSharpIcon from "@material-ui/icons/DeleteForeverSharp";
 import CustomModal from "../../global/CustomModal";
 
 const useStyles = makeStyles((theme) => ({
+  logo: {
+    color: grey[200],
+  },
+  filterLabel: {
+    color: grey[50],
+    display: "inline-block",
+    fontSize: "1rem",
+    width: "20%",
+  },
+  filterInput: {
+    color: grey[50],
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -36,6 +50,38 @@ const useStyles = makeStyles((theme) => ({
     float: "right",
     fontSize: ".8rem",
     marginLeft: "auto",
+  },
+  orange: {
+    backgroundColor: deepOrange[500],
+    color: grey[50],
+    fontWeight: "bold",
+    "&:hover": {
+      backgroundColor: deepOrange[400],
+      color: grey[100],
+    },
+  },
+  filterParmasContainer: {
+    borderBottom: "0.5px solid",
+    borderBottomColor: deepOrange[400],
+    paddingBottom: "1.2rem",
+  },
+
+  filterParams: {
+    border: ".5px solid rgba(255,255,255,0.4)",
+    borderRadius: "0.4rem",
+    color: grey[50],
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "max-content",
+    height: "2rem",
+    padding: "0 .5rem",
+    background: "none",
+    cursor: "pointer",
+    "&:hover": {
+      backgroundColor: "rgba(255,255,255,0.7)",
+      color: "rgba(0,0,0,0.6)",
+    },
   },
 }));
 
@@ -60,7 +106,7 @@ function List() {
     e.preventDefault();
     const payload = { dish, file, content };
     dispatch({ type: ACTIONTYPES.ADD_REQUEST, payload });
-    setOpen(false);
+    handleClose();
   }
 
   const modules = {
@@ -109,6 +155,10 @@ function List() {
   };
   const addFilter = () => {
     if (!filter) return;
+    if (filterArray.includes(filter)) {
+      setFilter(null);
+      return;
+    }
     setFilterArray([...filterArray, filter]);
     setFilter(null);
     return;
@@ -122,12 +172,14 @@ function List() {
     });
   }
   function handleClose() {
+    setOpen(false);
     setIngridient({});
     setDish({
       name: "",
       ingridients: [],
     });
     setContent("");
+    setFile(null);
   }
   const fileChangedHandler = (event) => {
     let file_size = event.target.files[0].size;
@@ -146,6 +198,8 @@ function List() {
     return;
   };
 
+  function removeFilter(item) {}
+
   useEffect(() => {
     fetchAllDishes(filterArray);
   }, [filterArray]);
@@ -160,7 +214,13 @@ function List() {
         className="mb-3"
         spacing={2}
       >
-        <Grid item xs={6} className="mr-3"></Grid>
+        <Grid item xs={5} className="mr-auto">
+          <Typography variant="h4" className={classes.logo}>
+            {" "}
+            Recipe
+          </Typography>
+        </Grid>
+
         <Grid item xs={4} className="mr-3">
           <div style={{ display: "flex" }}>
             <TextField
@@ -169,6 +229,11 @@ function List() {
               type="text"
               label="Filter by Ingridient"
               placeholder="Enter Ingidient"
+              color="secondary"
+              variant="standard"
+              InputProps={{
+                className: classes.filterInput,
+              }}
             />
             <Button onClick={() => addFilter()}>
               <AddIcon />
@@ -178,41 +243,44 @@ function List() {
         <Grid item>
           <Button
             variant="contained"
-            color="primary"
+            className={classes.orange}
             onClick={() => setOpen(!open)}
           >
             Add Dish
           </Button>
         </Grid>
       </Grid>
-      {filterArray && filterArray.length ? (
-        <div
-          className="p-3 "
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(10, minmax(0, 1fr))",
-            gridColumnGap: "10px",
-            border: "1px solid black",
-            width: "100%",
-            columnWidth: "fit-content",
-          }}
-        >
-          <InputLabel>Filter Parameters</InputLabel>
-          {filterArray.map((item, index) => (
-            <span
-              onClick={() =>
-                setFilterArray((prev) => prev.filter((itm) => itm !== item))
-              }
-            >
-              <p key={index} className="mr-3">
-                {item}
-              </p>
-            </span>
-          ))}
-        </div>
-      ) : (
-        ""
-      )}
+      <div
+        style={{ display: "flex", width: "100%" }}
+        className={classes.filterParmasContainer}
+      >
+        <div className={classes.filterLabel}>Filter Parameters :</div>
+        {filterArray && filterArray.length ? (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(5, minmax(0, 1fr))",
+              gridColumnGap: "10px",
+              width: "100%",
+              columnWidth: "fit-content",
+            }}
+          >
+            {filterArray.map((item, index) => (
+              <span
+                onClick={() =>
+                  setFilterArray((prev) => prev.filter((itm) => itm !== item))
+                }
+              >
+                <p key={index} className={classes.filterParams}>
+                  <DeleteForeverSharpIcon /> &nbsp; {item}
+                </p>
+              </span>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
 
       <div
         className="p-3 "
@@ -223,7 +291,11 @@ function List() {
         }}
       >
         {allDishes && allDishes.length > 0
-          ? allDishes.map((item, index) => <DishCard key={index} item={item} />)
+          ? allDishes.map((item, index) => (
+              <div className="mb-4">
+                <DishCard key={index} item={item} />
+              </div>
+            ))
           : "No dish found"}
       </div>
 
